@@ -5,10 +5,11 @@
   const HIDDEN = 'data-dl-personal-hidden';
   const metadata = new WeakMap();
   let applied = F.defaults(), draft = F.defaults(), host, shadow, timer, lastUrl = '', minimized = false;
-  let preloadPromise = null, preloadKey = '';
+  let preloadPromise = null, preloadGeneration = 0, wasListing;
   let saving = Promise.resolve();
   const clone = value => JSON.parse(JSON.stringify(value));
   const isListing = () => /^\/nouveaux\/?$/.test(location.pathname);
+  wasListing = isListing();
   const style = document.createElement('style');
   style.textContent = `[${HIDDEN}] { display: none !important; }`;
   document.documentElement.append(style);
@@ -56,7 +57,7 @@
     const started = Date.now();
     const check = () => {
       const currentCount = deals().length;
-      if (!trigger.isConnected || currentCount > previousCount) return resolve(currentCount > previousCount);
+      if (currentCount > previousCount) return resolve(true);
       if (Date.now() - started > 15000) return resolve(false);
       setTimeout(check, 150);
     };
@@ -65,24 +66,19 @@
   function nextPageTrigger() {
     const trigger = document.querySelector('#thread-inject[data-replace]');
     if (!trigger) return null;
-    try {
-      const endpoint = JSON.parse(trigger.getAttribute('data-replace')).endpoint;
-      const url = new URL(endpoint, location.href);
-      if (url.origin !== location.origin || url.pathname.replace(/\/$/, '') !== '/nouveaux') return null;
-      const page = Number(url.searchParams.get('page'));
-      return Number.isFinite(page) ? { trigger, page } : null;
-    } catch { return null; }
+    const parsed = F.parseNextPageTrigger(trigger.getAttribute('data-replace'), location.href);
+    return parsed ? { trigger, page: parsed.page } : null;
   }
   async function preloadTenPages() {
-    const key = `${location.pathname}${location.search}`;
-    if (!isListing() || (preloadPromise && preloadKey === key)) return preloadPromise;
-    preloadKey = key;
+    if (!isListing() || preloadPromise) return preloadPromise;
+    const generation = preloadGeneration;
     preloadPromise = (async () => {
       const output = shadow?.querySelector('#preload');
       let loadedThrough = 1;
       for (let attempt = 0; attempt < 9; attempt++) {
+        if (generation !== preloadGeneration || !isListing()) return;
         const next = nextPageTrigger();
-        if (!next || next.page > 10) break;
+        if (!next) break;
         loadedThrough = next.page - 1;
         if (output) output.textContent = `Préchargement des annonces : page ${next.page}/10…`;
         const previousCount = deals().length;
@@ -101,6 +97,7 @@
         }, 1200);
         const loaded = await waitForNextBatch(next.trigger, previousCount);
         clearTimeout(fallback);
+        if (generation !== preloadGeneration || !isListing()) return;
         if (!loaded) {
           if (output) output.textContent = `Préchargement interrompu après la page ${loadedThrough}. Fais défiler la liste pour continuer.`;
           apply();
@@ -216,6 +213,12 @@
     // SPA navigation also needs detection when it does not mutate the listing immediately.
     lastUrl = location.href;
     setTimeout(preloadTenPages, 300);
-    setInterval(() => { if (lastUrl !== location.href) { lastUrl = location.href; preloadPromise = null; apply(); setTimeout(preloadTenPages, 300); } }, 800);
+    setInterval(() => {
+      const listing = isListing();
+      if (lastUrl !== location.href) { lastUrl = location.href; apply(); }
+      if (wasListing && !listing) { preloadGeneration++; preloadPromise = null; }
+      if (!wasListing && listing) setTimeout(preloadTenPages, 300);
+      wasListing = listing;
+    }, 800);
   }).catch(error => console.error('Dealabs filters: initialization failed', error));
 })();

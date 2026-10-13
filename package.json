@@ -1,6 +1,6 @@
 {
   "name": "filtres-personnels-dealabs",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "private": true,
   "description": "Extension Chromium non officielle pour filtrer localement les nouveaux deals.",
   "scripts": {

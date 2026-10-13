@@ -36,7 +36,22 @@
       && (!ti.length || ti.some(v => title.includes(v)))
       && (!si.length || si.includes(shop));
   }
-  const api = { groups, MAX_RULES_PER_GROUP, normalize, sortRules, defaults, sanitize, accepts };
+  function parseNextPageTrigger(rawConfig, currentUrl) {
+    try {
+      const endpoint = JSON.parse(rawConfig)?.endpoint;
+      if (typeof endpoint !== 'string') return null;
+      const base = new URL(currentUrl);
+      const url = new URL(endpoint, base);
+      const page = Number(url.searchParams.get('page'));
+      if (url.origin !== base.origin || url.pathname.replace(/\/$/, '') !== '/nouveaux') return null;
+      if (!Number.isInteger(page) || page < 2 || page > 10) return null;
+      if (url.searchParams.get('ajax') !== 'true') return null;
+      return { endpoint: url.href, page };
+    } catch {
+      return null;
+    }
+  }
+  const api = { groups, MAX_RULES_PER_GROUP, normalize, sortRules, defaults, sanitize, accepts, parseNextPageTrigger };
   root.DealabsFilters = api;
   if (typeof module !== 'undefined') module.exports = api;
 })(globalThis);

@@ -32,3 +32,20 @@ test('plafonne chaque groupe de critères', () => {
   const rules = Array.from({ length: F.MAX_RULES_PER_GROUP + 20 }, (_, index) => rule(`règle ${index}`));
   assert.equal(F.sanitize({ titleInclude: rules }).titleInclude.length, F.MAX_RULES_PER_GROUP);
 });
+test('accepte uniquement une pagination Dealabs attendue entre 2 et 10', () => {
+  const base = 'https://www.dealabs.com/nouveaux';
+  const valid = JSON.stringify({ endpoint: '/nouveaux?page=2&ajax=true&layout=horizontal' });
+  assert.deepEqual(F.parseNextPageTrigger(valid, base), {
+    endpoint: 'https://www.dealabs.com/nouveaux?page=2&ajax=true&layout=horizontal',
+    page: 2
+  });
+  for (const endpoint of [
+    'https://example.com/nouveaux?page=2&ajax=true',
+    '/bons-plans?page=2&ajax=true',
+    '/nouveaux?page=1&ajax=true',
+    '/nouveaux?page=11&ajax=true',
+    '/nouveaux?page=2.5&ajax=true',
+    '/nouveaux?page=2'
+  ]) assert.equal(F.parseNextPageTrigger(JSON.stringify({ endpoint }), base), null);
+  assert.equal(F.parseNextPageTrigger('{malformed', base), null);
+});

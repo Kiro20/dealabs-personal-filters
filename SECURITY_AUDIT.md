@@ -1,7 +1,7 @@
 # Audit de sécurité avant publication
 
 Date : 13 octobre 2026  
-Version auditée : 1.3.1
+Version auditée : 1.3.2
 
 ## Périmètre
 

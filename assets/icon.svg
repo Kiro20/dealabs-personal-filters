@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Filtres personnels</title>
+  <desc id="desc">Un entonnoir turquoise sur un carré anthracite, accompagné d’un point corail.</desc>
+  <rect x="24" y="24" width="464" height="464" rx="112" fill="#202425" stroke="#3b4548" stroke-width="16"/>
+  <path d="M112 128h288L292 260v112l-72 36V260L112 128Z" fill="#08a9b8"/>
+  <circle cx="382" cy="136" r="38" fill="#ff6470" stroke="#202425" stroke-width="14"/>
+</svg>

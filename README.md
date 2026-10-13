@@ -15,7 +15,19 @@ Extension Chromium non officielle qui ajoute des filtres d’inclusion et d’ex
 - Préchargement séquentiel des pages 1 à 10 avec le mécanisme natif du site.
 - Conservation de la présentation et des liens Dealabs.
 
-## Installation locale
+## Installation
+
+### Depuis une Release GitHub
+
+1. Télécharger l’archive ZIP de la dernière [Release GitHub](https://github.com/Kiro20/dealabs-personal-filters/releases/latest).
+2. Extraire entièrement l’archive dans un dossier permanent.
+3. Ouvrir `brave://extensions` ou `chrome://extensions`.
+4. Activer le **Mode développeur**.
+5. Cliquer sur **Charger l’extension non empaquetée** et sélectionner le dossier extrait.
+
+Ne supprimez pas le dossier extrait tant que l’extension est installée.
+
+### Depuis le code source
 
 1. Télécharger ou cloner ce dépôt.
 2. Ouvrir `brave://extensions` ou `chrome://extensions`.
@@ -55,6 +67,14 @@ Le projet ne nécessite aucune installation de dépendance. Node.js 18 ou ultér
 ```console
 npm test
 ```
+
+Sous Windows, l’archive distribuable est générée avec :
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\tools\package-extension.ps1
+```
+
+Le ZIP obtenu contient uniquement les fichiers exécutés par l’extension, les icônes et la licence. `manifest.json` se trouve directement à la racine de l’archive.
 
 La logique métier est dans `filters.js`. L’intégration avec Dealabs et l’interface sont dans `content.js`. Les sélecteurs reposent sur le HTML de Dealabs et peuvent nécessiter une adaptation si le site évolue.
 

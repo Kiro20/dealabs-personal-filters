@@ -15,6 +15,6 @@ Une première réponse devrait être envoyée sous sept jours. Aucun délai de c
 - Aucun code distant ni `eval`.
 - Aucune dépendance d’exécution.
 - Permission limitée au stockage local.
-- Injection limitée à la page Dealabs `/nouveaux`.
+- Injection limitée à la page Dealabs `/tous`.
 - Texte utilisateur rendu avec `textContent`, jamais interprété comme HTML.
 - Validation de l’origine, du chemin et du numéro de page avant d’activer le chargement progressif.

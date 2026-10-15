@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Filtres personnels pour Dealabs",
-  "version": "1.3.2",
-  "description": "Extension non officielle pour filtrer localement les nouveaux deals par titre et boutique.",
+  "version": "1.3.3",
+  "description": "Extension non officielle pour filtrer localement tous les deals par titre et boutique.",
   "minimum_chrome_version": "105",
   "icons": {
     "16": "icons/icon16.png",
@@ -15,7 +15,7 @@
     "extension_pages": "script-src 'self'; object-src 'none'"
   },
   "content_scripts": [{
-    "matches": ["https://www.dealabs.com/nouveaux"],
+    "matches": ["https://www.dealabs.com/tous"],
     "js": ["filters.js", "content.js"],
     "run_at": "document_idle"
   }]

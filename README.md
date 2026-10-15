@@ -2,7 +2,7 @@
 
 <img src="assets/icon.svg" width="96" height="96" alt="Logo de l’extension : entonnoir turquoise sur fond anthracite">
 
-Extension Chromium non officielle qui ajoute des filtres d’inclusion et d’exclusion à la page des nouveaux deals de Dealabs.
+Extension Chromium non officielle qui ajoute des filtres d’inclusion et d’exclusion à la page Tous les deals de Dealabs.
 
 > Ce projet indépendant n’est ni affilié, ni approuvé, ni maintenu par Dealabs ou Pepper. « Dealabs » est une marque de son propriétaire respectif.
 
@@ -34,7 +34,7 @@ Ne supprimez pas le dossier extrait tant que l’extension est installée.
 3. Activer le **Mode développeur**.
 4. Cliquer sur **Charger l’extension non empaquetée**.
 5. Sélectionner le dossier du projet.
-6. Ouvrir ou recharger `https://www.dealabs.com/nouveaux`.
+6. Ouvrir ou recharger `https://www.dealabs.com/tous`.
 
 Après une mise à jour des fichiers, recharger l’extension puis l’onglet Dealabs.
 
@@ -55,7 +55,7 @@ Chaque groupe est limité à 200 critères pour préserver les performances et l
 
 L’extension ne contient aucune télémétrie, publicité ou dépendance distante. Elle demande uniquement :
 
-- l’accès à `https://www.dealabs.com/nouveaux*`, afin de lire et masquer les cartes affichées ;
+- l’accès à `https://www.dealabs.com/tous*`, afin de lire et masquer les cartes affichées ;
 - la permission `storage`, afin d’enregistrer les critères dans le profil local du navigateur.
 
 Elle ne lit pas les identifiants, cookies ou données du compte. Le préchargement demande séquentiellement jusqu’à neuf pages supplémentaires par l’intermédiaire du mécanisme de pagination de Dealabs. Consultez [PRIVACY.md](PRIVACY.md) pour la politique complète.
@@ -83,7 +83,7 @@ Les contributions sont décrites dans [CONTRIBUTING.md](CONTRIBUTING.md). Les fa
 ## Limites
 
 - Compatibilité ciblée : Brave et navigateurs Chromium récents.
-- L’extension intervient uniquement sur `/nouveaux`.
+- L’extension intervient uniquement sur `/tous`.
 - Le préchargement dépend du mécanisme interne de pagination de Dealabs et peut cesser de fonctionner après une modification du site.
 - L’utilisateur reste responsable du respect des conditions d’utilisation de Dealabs.
 

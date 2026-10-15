@@ -8,7 +8,7 @@
   let preloadPromise = null, preloadGeneration = 0, wasListing;
   let saving = Promise.resolve();
   const clone = value => JSON.parse(JSON.stringify(value));
-  const isListing = () => /^\/nouveaux\/?$/.test(location.pathname);
+  const isListing = () => /^\/tous\/?$/.test(location.pathname);
   wasListing = isListing();
   const style = document.createElement('style');
   style.textContent = `[${HIDDEN}] { display: none !important; }`;

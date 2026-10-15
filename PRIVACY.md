@@ -12,7 +12,7 @@ Les critères saisis, leur état actif ou inactif et l’activation générale s
 
 Le projet ne possède aucun serveur, compte utilisateur, outil d’analyse, publicité ou télémétrie. Il ne collecte et ne transmet les critères à aucun tiers.
 
-Lorsque la page `/nouveaux` est ouverte, l’extension déclenche le mécanisme natif de Dealabs pour précharger jusqu’aux pages 1 à 10. Ces requêtes sont adressées uniquement à Dealabs et restent soumises à sa propre politique de confidentialité.
+Lorsque la page `/tous` est ouverte, l’extension déclenche le mécanisme natif de Dealabs pour précharger jusqu’aux pages 1 à 10. Ces requêtes sont adressées uniquement à Dealabs et restent soumises à sa propre politique de confidentialité.
 
 ## Suppression
 

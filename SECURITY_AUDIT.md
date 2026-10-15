@@ -1,7 +1,7 @@
 # Audit de sécurité avant publication
 
 Date : 13 octobre 2026  
-Version auditée : 1.3.2
+Version auditée : 1.3.3
 
 ## Périmètre
 
@@ -17,19 +17,19 @@ Aucune vulnérabilité critique ou élevée identifiée dans le périmètre audi
 - aucune dépendance d’exécution ou chaîne d’approvisionnement tierce ;
 - aucune télémétrie, publicité ou communication avec un serveur contrôlé par le projet ;
 - seule permission d’extension : `storage` ;
-- exécution limitée à `https://www.dealabs.com/nouveaux` ;
+- exécution limitée à `https://www.dealabs.com/tous` ;
 - politique de sécurité du contenu interdisant les scripts distants et les objets ;
 - absence de `eval`, de constructeur de fonction et de code distant ;
 - saisies limitées à 200 caractères et 200 critères par groupe ;
 - critères dédupliqués et normalisés lors de la lecture du stockage ;
 - texte saisi injecté avec `textContent`, sans interprétation HTML ;
-- endpoint de pagination accepté uniquement s’il conserve l’origine Dealabs, la route `/nouveaux` et une page numérique plafonnée à 10 ;
+- endpoint de pagination accepté uniquement s’il conserve l’origine Dealabs, la route `/tous` et une page numérique plafonnée à 10 ;
 - préchargement séquentiel, limité à neuf pages supplémentaires.
 
 ### Risques résiduels
 
 - Une modification du DOM ou des attributs internes de Dealabs peut casser le filtrage ou le préchargement.
-- Le préchargement génère jusqu’à neuf requêtes supplémentaires vers Dealabs à chaque ouverture de `/nouveaux`.
+- Le préchargement génère jusqu’à neuf requêtes supplémentaires vers Dealabs à chaque ouverture de `/tous`.
 - Le stockage local dépend des garanties du navigateur et du profil de l’utilisateur.
 - Le projet utilise le nom de Dealabs de manière descriptive ; le caractère non officiel doit rester visible dans le README et toute fiche de distribution.
 

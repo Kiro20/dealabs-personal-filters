@@ -43,7 +43,7 @@
       const base = new URL(currentUrl);
       const url = new URL(endpoint, base);
       const page = Number(url.searchParams.get('page'));
-      if (url.origin !== base.origin || url.pathname.replace(/\/$/, '') !== '/nouveaux') return null;
+      if (url.origin !== base.origin || url.pathname.replace(/\/$/, '') !== '/tous') return null;
       if (!Number.isInteger(page) || page < 2 || page > 10) return null;
       if (url.searchParams.get('ajax') !== 'true') return null;
       return { endpoint: url.href, page };

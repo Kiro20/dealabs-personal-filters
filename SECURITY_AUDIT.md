@@ -1,11 +1,12 @@
 # Audit de sécurité avant publication
 
-Date : 13 octobre 2026  
-Version auditée : 1.3.3
+Date : 15 octobre 2026
+
+Version auditée : 1.4.0
 
 ## Périmètre
 
-Audit statique de `manifest.json`, `filters.js` et `content.js`, complété par les tests de la logique de filtrage. L’intégration visuelle et le comportement réel de Dealabs doivent encore être validés manuellement après rechargement de la version 1.3.0.
+Audit statique de `manifest.json`, `filters.js` et `content.js`, complété par les tests de la logique de filtrage. L’intégration visuelle et le comportement réel de Dealabs doivent encore être validés manuellement après rechargement de la version 1.4.0.
 
 ## Résultat
 
@@ -16,7 +17,8 @@ Aucune vulnérabilité critique ou élevée identifiée dans le périmètre audi
 - aucune clé, aucun jeton, mot de passe ou autre secret dans le projet ;
 - aucune dépendance d’exécution ou chaîne d’approvisionnement tierce ;
 - aucune télémétrie, publicité ou communication avec un serveur contrôlé par le projet ;
-- seule permission d’extension : `storage` ;
+- permission d’extension limitée à `storage` ;
+- accès réseau tiers limité à l’API publique `https://api.github.com/*` pour la vérification de version ;
 - exécution limitée à `https://www.dealabs.com/tous` ;
 - politique de sécurité du contenu interdisant les scripts distants et les objets ;
 - absence de `eval`, de constructeur de fonction et de code distant ;

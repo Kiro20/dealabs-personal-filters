@@ -51,7 +51,32 @@
       return null;
     }
   }
-  const api = { groups, MAX_RULES_PER_GROUP, normalize, sortRules, defaults, sanitize, accepts, parseNextPageTrigger };
+  function parseVersion(value) {
+    const match = String(value || '').trim().match(/^v?(\d+)\.(\d+)\.(\d+)$/i);
+    return match ? match.slice(1).map(Number) : null;
+  }
+  function compareVersions(left, right) {
+    const a = parseVersion(left), b = parseVersion(right);
+    if (!a || !b) return null;
+    for (let index = 0; index < 3; index++) {
+      if (a[index] !== b[index]) return a[index] > b[index] ? 1 : -1;
+    }
+    return 0;
+  }
+  function getUpdateInfo(release, currentVersion) {
+    if (!release || typeof release !== 'object' || release.draft || release.prerelease) return null;
+    const version = String(release.tag_name || '').replace(/^v/i, '');
+    if (compareVersions(version, currentVersion) !== 1) return null;
+    try {
+      const url = new URL(release.html_url);
+      if (url.protocol !== 'https:' || url.hostname !== 'github.com') return null;
+      if (!url.pathname.startsWith('/Kiro20/dealabs-personal-filters/releases/tag/')) return null;
+      return { version, url: url.href };
+    } catch {
+      return null;
+    }
+  }
+  const api = { groups, MAX_RULES_PER_GROUP, normalize, sortRules, defaults, sanitize, accepts, parseNextPageTrigger, compareVersions, getUpdateInfo };
   root.DealabsFilters = api;
   if (typeof module !== 'undefined') module.exports = api;
 })(globalThis);

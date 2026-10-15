@@ -1,6 +1,6 @@
 # Politique de confidentialité
 
-Dernière mise à jour : 13 octobre 2026.
+Dernière mise à jour : 15 octobre 2026.
 
 ## Données traitées
 
@@ -13,6 +13,8 @@ Les critères saisis, leur état actif ou inactif et l’activation générale s
 Le projet ne possède aucun serveur, compte utilisateur, outil d’analyse, publicité ou télémétrie. Il ne collecte et ne transmet les critères à aucun tiers.
 
 Lorsque la page `/tous` est ouverte, l’extension déclenche le mécanisme natif de Dealabs pour précharger jusqu’aux pages 1 à 10. Ces requêtes sont adressées uniquement à Dealabs et restent soumises à sa propre politique de confidentialité.
+
+L’extension consulte au maximum toutes les six heures l’API publique de GitHub pour connaître la dernière release du projet. Cette requête est envoyée sans identifiants et ne contient ni critère, ni donnée issue de Dealabs. La version obtenue et l’heure de vérification sont conservées dans le stockage local du navigateur.
 
 ## Suppression
 

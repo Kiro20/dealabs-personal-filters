@@ -13,6 +13,7 @@ Extension Chromium non officielle qui ajoute des filtres d’inclusion et d’ex
 - Activation individuelle des critères et suspension globale du filtrage.
 - Tri alphabétique et stockage local des critères.
 - Préchargement séquentiel des pages 1 à 10 avec le mécanisme natif du site.
+- Vérification périodique de la dernière release GitHub avec un bandeau lorsqu’une mise à jour est disponible.
 - Conservation de la présentation et des liens Dealabs.
 
 ## Installation
@@ -56,9 +57,10 @@ Chaque groupe est limité à 200 critères pour préserver les performances et l
 L’extension ne contient aucune télémétrie, publicité ou dépendance distante. Elle demande uniquement :
 
 - l’accès à `https://www.dealabs.com/tous*`, afin de lire et masquer les cartes affichées ;
+- l’accès à `https://api.github.com/*`, afin de vérifier au maximum toutes les six heures la dernière version publiée ;
 - la permission `storage`, afin d’enregistrer les critères dans le profil local du navigateur.
 
-Elle ne lit pas les identifiants, cookies ou données du compte. Le préchargement demande séquentiellement jusqu’à neuf pages supplémentaires par l’intermédiaire du mécanisme de pagination de Dealabs. Consultez [PRIVACY.md](PRIVACY.md) pour la politique complète.
+Elle ne lit pas les identifiants, cookies ou données du compte. La requête GitHub est envoyée sans identifiants et ne contient aucun critère. Le préchargement demande séquentiellement jusqu’à neuf pages supplémentaires par l’intermédiaire du mécanisme de pagination de Dealabs. Consultez [PRIVACY.md](PRIVACY.md) pour la politique complète.
 
 ## Développement et vérification
 

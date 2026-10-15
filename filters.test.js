@@ -50,3 +50,21 @@ test('accepte uniquement une pagination Dealabs attendue entre 2 et 10', () => {
   ]) assert.equal(F.parseNextPageTrigger(JSON.stringify({ endpoint }), base), null);
   assert.equal(F.parseNextPageTrigger('{malformed', base), null);
 });
+test('compare les versions sémantiques et valide une release GitHub plus récente', () => {
+  assert.equal(F.compareVersions('1.4.0', '1.3.3'), 1);
+  assert.equal(F.compareVersions('v1.3.3', '1.3.3'), 0);
+  assert.equal(F.compareVersions('1.2.9', '1.3.3'), -1);
+  assert.equal(F.compareVersions('invalide', '1.3.3'), null);
+  assert.deepEqual(F.getUpdateInfo({
+    tag_name: 'v1.4.1',
+    html_url: 'https://github.com/Kiro20/dealabs-personal-filters/releases/tag/v1.4.1',
+    draft: false,
+    prerelease: false
+  }, '1.4.0'), {
+    version: '1.4.1',
+    url: 'https://github.com/Kiro20/dealabs-personal-filters/releases/tag/v1.4.1'
+  });
+  assert.equal(F.getUpdateInfo({ tag_name: 'v1.4.0', html_url: 'https://github.com/Kiro20/dealabs-personal-filters/releases/tag/v1.4.0' }, '1.4.0'), null);
+  assert.equal(F.getUpdateInfo({ tag_name: 'v9.0.0', html_url: 'https://example.com/release' }, '1.4.0'), null);
+  assert.equal(F.getUpdateInfo({ tag_name: 'v9.0.0', html_url: 'https://github.com/Kiro20/dealabs-personal-filters/releases/tag/v9.0.0', prerelease: true }, '1.4.0'), null);
+});

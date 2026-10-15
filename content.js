@@ -2,6 +2,9 @@
   'use strict';
   const F = globalThis.DealabsFilters;
   const KEY = 'personalFiltersV1';
+  const UPDATE_KEY = 'releaseCheckV1';
+  const RELEASE_API = 'https://api.github.com/repos/Kiro20/dealabs-personal-filters/releases/latest';
+  const UPDATE_CACHE_MS = 6 * 60 * 60 * 1000;
   const HIDDEN = 'data-dl-personal-hidden';
   const metadata = new WeakMap();
   let applied = F.defaults(), draft = F.defaults(), host, shadow, timer, lastUrl = '', minimized = false;
@@ -119,6 +122,48 @@
     saving = saving.catch(() => {}).then(() => chrome.storage.local.set({ [KEY]: snapshot }));
     saving.catch(() => { if (shadow) shadow.querySelector('#status').textContent = 'Échec de sauvegarde. Recharge l’extension puis réessaie.'; });
   }
+  function showUpdate(release) {
+    if (!shadow) return;
+    const banner = shadow.querySelector('#update-banner');
+    const update = F.getUpdateInfo(release, chrome.runtime.getManifest().version);
+    banner.hidden = !update;
+    if (!update) return;
+    banner.href = update.url;
+    shadow.querySelector('#update-version').textContent = update.version;
+  }
+  async function checkForUpdate() {
+    try {
+      const cached = (await chrome.storage.local.get(UPDATE_KEY))[UPDATE_KEY];
+      if (cached && Number.isFinite(cached.checkedAt) && Date.now() - cached.checkedAt < UPDATE_CACHE_MS) {
+        showUpdate(cached.release);
+        return;
+      }
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 6000);
+      let response;
+      try {
+        response = await fetch(RELEASE_API, {
+          headers: { Accept: 'application/vnd.github+json' },
+          signal: controller.signal,
+          credentials: 'omit'
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
+      if (!response.ok) return;
+      const data = await response.json();
+      const release = {
+        tag_name: data.tag_name,
+        html_url: data.html_url,
+        draft: data.draft,
+        prerelease: data.prerelease
+      };
+      await chrome.storage.local.set({ [UPDATE_KEY]: { checkedAt: Date.now(), release } });
+      showUpdate(release);
+    } catch (error) {
+      console.debug('Dealabs filters: update check unavailable', error);
+    }
+  }
   function dirty() { shadow.querySelector('#status').textContent = 'Modifications en attente — clique sur Appliquer.'; }
   function renderRules() {
     let activeCount = 0;
@@ -153,6 +198,8 @@
       *, *::before, *::after { box-sizing: border-box; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important; }
       .panel { font-size: 14px; line-height: 1.4; }
       .panel { width: min(332px, calc(100vw - 28px)); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 14px 42px rgba(0,0,0,.48); overflow: hidden; }
+      #update-banner { display: block; padding: 9px 14px; background: #123d42; border-bottom: 1px solid #28636a; color: #bdf6fa; font-size: 12px; font-weight: 650; text-align: center; text-decoration: none; }
+      #update-banner:hover { background: #184a50; color: #fff; } #update-banner[hidden] { display: none; }
       header { display: flex; align-items: center; justify-content: space-between; min-height: 54px; padding: 0 14px 0 16px; border-bottom: 1px solid var(--line); }
       .heading { display: flex; align-items: center; gap: 9px; } .brand-icon { width: 28px; height: 28px; flex: 0 0 28px; } h2 { font-size: 16px; line-height: 1; margin: 0; font-weight: 700; letter-spacing: -.01em; }
       #rule-count { min-width: 21px; height: 21px; padding: 2px 6px; border-radius: 12px; background: rgba(2,165,181,.18); color: #55d8e3; font-size: 12px; font-weight: 700; text-align: center; }
@@ -183,6 +230,13 @@
     <div class="meta"><p id="status" role="status" aria-live="polite">Filtres mémorisés sur ce navigateur.</p><p id="count" aria-live="polite"></p><p id="preload" aria-live="polite">Préchargement en attente…</p><p id="diagnostic"></p></div>
     </div></section>`;
     document.documentElement.append(host);
+    const updateBanner = document.createElement('a');
+    updateBanner.id = 'update-banner';
+    updateBanner.hidden = true;
+    updateBanner.target = '_blank';
+    updateBanner.rel = 'noopener noreferrer';
+    updateBanner.append('Nouvelle version ', Object.assign(document.createElement('span'), { id: 'update-version' }), ' disponible sur GitHub');
+    shadow.querySelector('.panel').prepend(updateBanner);
     shadow.querySelectorAll('form').forEach(form => form.addEventListener('submit', event => {
       event.preventDefault(); const input = form.querySelector('input'), text = input.value.trim(), key = form.dataset.group;
       if (!text) return;
@@ -201,7 +255,7 @@
     const collapse = shadow.querySelector('#collapse');
     const setCollapsed = () => { shadow.querySelector('.body').hidden = minimized; collapse.textContent = minimized ? '+' : '−'; collapse.setAttribute('aria-expanded', String(!minimized)); collapse.setAttribute('aria-label', minimized ? 'Afficher les filtres' : 'Réduire les filtres'); };
     collapse.addEventListener('click', () => { minimized = !minimized; setCollapsed(); });
-    setCollapsed(); renderRules();
+    setCollapsed(); renderRules(); checkForUpdate();
   }
   chrome.storage.local.get(KEY).then(data => {
     applied = F.sanitize(data[KEY]); draft = clone(applied); apply();

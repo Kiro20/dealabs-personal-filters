@@ -1,6 +1,7 @@
 (() => {
   'use strict';
   const F = globalThis.DealabsFilters;
+  const extensionApi = globalThis.browser || globalThis.chrome;
   const KEY = 'personalFiltersV1';
   const UPDATE_KEY = 'releaseCheckV1';
   const RELEASE_API = 'https://api.github.com/repos/Kiro20/dealabs-personal-filters/releases/latest';
@@ -119,13 +120,13 @@
   }
   function persist() {
     const snapshot = clone(applied);
-    saving = saving.catch(() => {}).then(() => chrome.storage.local.set({ [KEY]: snapshot }));
+    saving = saving.catch(() => {}).then(() => extensionApi.storage.local.set({ [KEY]: snapshot }));
     saving.catch(() => { if (shadow) shadow.querySelector('#status').textContent = 'Échec de sauvegarde. Recharge l’extension puis réessaie.'; });
   }
   function showUpdate(release) {
     if (!shadow) return;
     const banner = shadow.querySelector('#update-banner');
-    const update = F.getUpdateInfo(release, chrome.runtime.getManifest().version);
+    const update = F.getUpdateInfo(release, extensionApi.runtime.getManifest().version);
     banner.hidden = !update;
     if (!update) return;
     banner.href = update.url;
@@ -133,7 +134,7 @@
   }
   async function checkForUpdate() {
     try {
-      const cached = (await chrome.storage.local.get(UPDATE_KEY))[UPDATE_KEY];
+      const cached = (await extensionApi.storage.local.get(UPDATE_KEY))[UPDATE_KEY];
       if (cached && Number.isFinite(cached.checkedAt) && Date.now() - cached.checkedAt < UPDATE_CACHE_MS) {
         showUpdate(cached.release);
         return;
@@ -158,7 +159,7 @@
         draft: data.draft,
         prerelease: data.prerelease
       };
-      await chrome.storage.local.set({ [UPDATE_KEY]: { checkedAt: Date.now(), release } });
+      await extensionApi.storage.local.set({ [UPDATE_KEY]: { checkedAt: Date.now(), release } });
       showUpdate(release);
     } catch (error) {
       console.debug('Dealabs filters: update check unavailable', error);
@@ -257,7 +258,7 @@
     collapse.addEventListener('click', () => { minimized = !minimized; setCollapsed(); });
     setCollapsed(); renderRules(); checkForUpdate();
   }
-  chrome.storage.local.get(KEY).then(data => {
+  extensionApi.storage.local.get(KEY).then(data => {
     applied = F.sanitize(data[KEY]); draft = clone(applied); apply();
     const observer = new MutationObserver(records => {
       if (records.every(record => record.target === host || host?.contains(record.target))) return;

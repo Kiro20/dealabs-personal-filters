@@ -1,12 +1,12 @@
 # Politique de confidentialité
 
-Dernière mise à jour : 15 octobre 2026.
+Dernière mise à jour : 16 octobre 2026.
 
 ## Données traitées
 
 L’extension lit dans la page Dealabs ouverte le titre des annonces, le nom de leur boutique et les éléments nécessaires au chargement progressif. Ce traitement s’effectue localement dans le navigateur.
 
-Les critères saisis, leur état actif ou inactif et l’activation générale sont enregistrés avec `chrome.storage.local`. Ces données restent dans le profil du navigateur, sous réserve des fonctions de synchronisation ou de sauvegarde propres au navigateur choisi par l’utilisateur.
+Les critères saisis, leur état actif ou inactif et l’activation générale sont enregistrés avec l’API locale `storage.local` du navigateur. Ces données restent dans le profil du navigateur, sous réserve des fonctions de synchronisation ou de sauvegarde propres au navigateur choisi par l’utilisateur.
 
 ## Transmission et collecte
 

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Filtres personnels pour Dealabs",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Extension non officielle pour filtrer localement tous les deals par titre et boutique.",
   "minimum_chrome_version": "105",
   "icons": {

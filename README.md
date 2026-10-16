@@ -2,7 +2,7 @@
 
 <img src="assets/icon.svg" width="96" height="96" alt="Logo de l’extension : entonnoir turquoise sur fond anthracite">
 
-Extension Chromium non officielle qui ajoute des filtres d’inclusion et d’exclusion à la page Tous les deals de Dealabs.
+Extension WebExtensions non officielle pour Firefox, Brave, Chrome et les navigateurs Chromium. Elle ajoute des filtres d’inclusion et d’exclusion à la page Tous les deals de Dealabs.
 
 > Ce projet indépendant n’est ni affilié, ni approuvé, ni maintenu par Dealabs ou Pepper. « Dealabs » est une marque de son propriétaire respectif.
 
@@ -18,7 +18,7 @@ Extension Chromium non officielle qui ajoute des filtres d’inclusion et d’ex
 
 ## Installation
 
-### Depuis une Release GitHub
+### Brave, Chrome et navigateurs Chromium
 
 1. Télécharger l’archive ZIP de la dernière [Release GitHub](https://github.com/Kiro20/dealabs-personal-filters/releases/latest).
 2. Extraire entièrement l’archive dans un dossier permanent.
@@ -27,6 +27,17 @@ Extension Chromium non officielle qui ajoute des filtres d’inclusion et d’ex
 5. Cliquer sur **Charger l’extension non empaquetée** et sélectionner le dossier extrait.
 
 Ne supprimez pas le dossier extrait tant que l’extension est installée.
+
+### Firefox
+
+Le package Firefox est préparé séparément dans chaque release. Pour un test local :
+
+1. Télécharger l’archive `filtres-personnels-dealabs-firefox-vX.Y.Z.zip` de la dernière release.
+2. Ouvrir `about:debugging#/runtime/this-firefox`.
+3. Cliquer sur **Charger un module complémentaire temporaire**.
+4. Sélectionner l’archive ZIP ou son fichier `manifest.json` après extraction.
+
+Firefox supprime les modules temporaires à sa fermeture. Une installation permanente dans Firefox stable nécessite une version signée par Mozilla Add-ons.
 
 ### Depuis le code source
 
@@ -76,7 +87,7 @@ Sous Windows, l’archive distribuable est générée avec :
 powershell -ExecutionPolicy Bypass -File .\tools\package-extension.ps1
 ```
 
-Le ZIP obtenu contient uniquement les fichiers exécutés par l’extension, les icônes et la licence. `manifest.json` se trouve directement à la racine de l’archive.
+Le script produit un ZIP Chromium et un ZIP Firefox. Ils contiennent uniquement les fichiers exécutés par l’extension, les icônes et la licence. Le manifeste propre à chaque navigateur se trouve sous le nom `manifest.json` à la racine de son archive.
 
 La logique métier est dans `filters.js`. L’intégration avec Dealabs et l’interface sont dans `content.js`. Les sélecteurs reposent sur le HTML de Dealabs et peuvent nécessiter une adaptation si le site évolue.
 
@@ -84,7 +95,7 @@ Les contributions sont décrites dans [CONTRIBUTING.md](CONTRIBUTING.md). Les fa
 
 ## Limites
 
-- Compatibilité ciblée : Brave et navigateurs Chromium récents.
+- Compatibilité ciblée : Firefox 142 ou ultérieur, Brave et navigateurs Chromium récents.
 - L’extension intervient uniquement sur `/tous`.
 - Le préchargement dépend du mécanisme interne de pagination de Dealabs et peut cesser de fonctionner après une modification du site.
 - L’utilisateur reste responsable du respect des conditions d’utilisation de Dealabs.

@@ -1,10 +1,10 @@
 {
   "name": "filtres-personnels-dealabs",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": true,
-  "description": "Extension Chromium non officielle pour filtrer localement tous les deals.",
+  "description": "Extension WebExtensions non officielle pour filtrer localement tous les deals.",
   "scripts": {
-    "test": "node --check filters.js && node --check content.js && node --test filters.test.js"
+    "test": "node --check filters.js && node --check content.js && node --check tools/check-manifests.js && node tools/check-manifests.js && node --test filters.test.js"
   },
   "engines": {
     "node": ">=18"
